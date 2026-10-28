@@ -1,0 +1,21 @@
+name: Rebuild dev server
+
+on:
+  workflow_dispatch:
+    inputs:
+      note:
+        description: Optional note for this rebuild
+        required: false
+        type: string
+
+jobs:
+  rebuild-dev:
+    runs-on: [self-hosted, Linux, X64, baked-demoapp]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild and start baked-demoapp
+        run: |
+          echo "Dispatch note: ${{ inputs.note }}"
+          docker compose -p baked-demoapp up -d --build --wait --remove-orphans
+          docker compose -p baked-demoapp ps

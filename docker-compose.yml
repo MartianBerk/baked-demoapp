@@ -1,0 +1,13 @@
+services:
+  baked-demoapp:
+    build: .
+    image: baked-demoapp:dev
+    container_name: baked-demoapp
+    ports:
+      - "8030:80"
+    environment:
+      AUTH_UPSTREAM: ${AUTH_UPSTREAM:-http://host.docker.internal:8010}
+      USER_UPSTREAM: ${USER_UPSTREAM:-http://host.docker.internal:8020}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
